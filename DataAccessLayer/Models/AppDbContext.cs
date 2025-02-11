@@ -19,13 +19,13 @@ namespace DataAccessLayer.Models
         public virtual DbSet<Cita> Citas { get; set; } = null!;
         public virtual DbSet<Estado> Estados { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=idoppril-devdb;DataBase=DB_Martin;Trusted_Connection=True;");
-            }
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer("Server=idoppril-devdb;DataBase=DB_Martin;Trusted_Connection=True;");
+        //    }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -15,7 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 builder.Services.AddScoped<ICitaRepository, CitaRepository>();
-//builder.Services.AddScoped<ICitaService, CitaService>();
+builder.Services.AddScoped<ICitaService, CitaService>();
 
 
 var app = builder.Build();
@@ -37,6 +37,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Cita}/{action=Index}/{id?}");
 
 app.Run();

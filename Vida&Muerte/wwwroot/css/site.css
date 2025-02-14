@@ -16,3 +16,41 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.navbar {
+    background: #2663a8;
+}
+
+.navbar-brand {
+    color: white;
+}
+
+#filtroCita {
+    display: inline;
+}
+/*==================== Dropdown ====================*/
+#cboCita {
+    display: inline;
+    float: right;
+}
+
+#btnCNuevo {
+    float: right;
+    margin: 10px;
+}
+
+#txtTitulo {
+    text-align: center;
+}
+
+.rounded {
+    margin: auto;
+}
+
+.form-group {
+    margin: auto;
+}
+
+#divBoton {
+    margin-left: 69px 
+}

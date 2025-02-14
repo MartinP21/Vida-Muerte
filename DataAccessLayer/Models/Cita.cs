@@ -27,7 +27,7 @@ namespace DataAccessLayer.Models
 
         [ForeignKey("IdEstado")]
         [InverseProperty("Cita")]
-        public virtual Estado IdEstadoNavigation { get; set; } = null!;
+        public virtual Estado? IdEstadoNavigation { get; set; } = null!;
 
         [NotMapped]
         public string NombreEstado => IdEstadoNavigation?.NombreEstado ?? "Desconocido";

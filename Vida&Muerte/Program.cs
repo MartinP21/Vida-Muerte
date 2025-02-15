@@ -1,3 +1,7 @@
+using BusinessLogicLayer;
+using BusinessLogicLayer.Interfaces;
+using DataAccessLayer;
+using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +13,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+builder.Services.AddScoped<ICitaRepository, CitaRepository>();
+builder.Services.AddScoped<ICitaService, CitaService>();
 
 
 var app = builder.Build();
@@ -30,6 +37,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Cita}/{action=Index}/{id?}");
 
 app.Run();

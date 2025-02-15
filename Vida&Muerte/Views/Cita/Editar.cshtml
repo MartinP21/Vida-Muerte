@@ -1,0 +1,39 @@
+﻿@model DataAccessLayer.Models.Cita
+
+<div class="container">
+    <h1 id="txtTitulo">Editar cita</h1>
+    <div class="rounded border p-2 w-50">
+        <form asp-action="Editar">
+            <div class="form-group mt-3 w-75">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3 w-75">
+                <label asp-for="Apellidos" class="control-label"></label>
+                <input asp-for="Apellidos" class="form-control" />
+                <span asp-validation-for="Apellidos" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3 w-75">
+                <label asp-for="Cedula" class="control-label"></label>
+                <input asp-for="Cedula" class="form-control" />
+                <span asp-validation-for="Cedula" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3 w-75">
+                <label asp-for="Telefono" class="control-label"></label>
+                <input asp-for="Telefono" class="form-control" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3 w-75">
+                <label asp-for="FechaCita" class="control-label">Fecha</label>
+                <input asp-for="FechaCita" class="form-control" />
+                <span asp-validation-for="FechaCita" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3" id="divBoton">
+                <a class="btn btn-primary">Guardar</a>
+                <a href="@Url.Action("Index", "Cita")" class="btn btn-dark">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

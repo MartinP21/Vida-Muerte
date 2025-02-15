@@ -1,11 +1,6 @@
 ﻿using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
@@ -16,30 +11,42 @@ namespace DataAccessLayer
         {
             _context = context;
         }
-
-        public Task<Cita> ActualizarCitaAsync(Cita cita)
+        public async Task<IEnumerable<Cita>> ObtenerCitasAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Citas.Include(c => c.IdEstadoNavigation).ToListAsync();
         }
 
-        public Task<Cita> CrearCitaAsync(Cita cita)
+        public async Task<Cita> ObtenerCitasPorIdAsync(int Id)
         {
-            throw new NotImplementedException();
+            var cita = await _context.Citas.FindAsync();
+            if (cita == null)
+            {
+                throw new KeyNotFoundException($"ERROR: No se encontro la cita con ID: {Id}");
+            }
+            return cita;
+        }
+        public async Task CrearCitaAsync(Cita cita)
+        {
+            _context.Citas.Add(cita);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<Cita> DeshabilitarCitaAsync(int Id)
+        public async Task ActualizarCitaAsync(Cita cita)
         {
-            throw new NotImplementedException();
+            _context.Citas.Update(cita);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Cita>> ObtenerCitasAsync(Cita cita)
+        public async Task DeshabilitarCitaAsync(int Id)
         {
-            throw new NotImplementedException();
+            var cita = await _context.Citas.FindAsync();
+            if (cita != null)
+            {
+                cita.IdEstado = 3;
+                _context.Citas.Update(cita);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public Task<Cita> ObtenerCitasPorIdAsync(int Id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

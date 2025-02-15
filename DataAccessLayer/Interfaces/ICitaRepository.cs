@@ -4,10 +4,10 @@ namespace DataAccessLayer.Interfaces
 {
     public interface ICitaRepository
     {
-        Task<IEnumerable<Cita>> ObtenerCitasAsync(Cita cita);
+        Task<IEnumerable<Cita>> ObtenerCitasAsync();
         Task<Cita> ObtenerCitasPorIdAsync(int Id);
-        Task<Cita> CrearCitaAsync(Cita cita);
-        Task<Cita> ActualizarCitaAsync(Cita cita);
-        Task<Cita> DeshabilitarCitaAsync(int Id);
+        Task CrearCitaAsync(Cita cita);
+        Task ActualizarCitaAsync(Cita cita);
+        Task DeshabilitarCitaAsync(int Id);
     }
 }

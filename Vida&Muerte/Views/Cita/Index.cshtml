@@ -1,0 +1,48 @@
+﻿@model IEnumerable<DataAccessLayer.Models.Cita>
+
+<div class="container">
+    <div id="cabecero">
+        <input type="text" name="filtro" id="filtroCita" class="form-control w-50" placeholder="Escribir cita a buscar..."/>
+        
+        <form action="/action_page.php" id="cboCita">
+            <label for="citas">Mostrar Citas</label>
+            <select name="citas" id="citas">
+                <option value="1">Pendientes</option>
+                <option value="2">Completadas</option>
+                <option value="3">Deshabilitadas</option>
+            </select>
+        </form>
+    </div>
+
+    <a href="@Url.Action("Crear", "Cita")" class="btn btn-primary" id="btnCNuevo">Crear Nuevo</a>
+    <table class="table table-hover rounded border p-2">
+        <thead class="table-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Cédula</th>
+                <th>Teléfono</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var cita in Model)
+            {
+                <tr>
+                    <td>@cita.Nombre</td>
+                    <td>@cita.Apellidos</td>
+                    <td>@cita.Cedula</td>
+                    <td>@cita.Telefono</td>
+                    <td>@cita.FechaCita.ToString("dd/MM/yyyy")</td>
+                    <td>@cita.NombreEstado</td>
+                    <td>
+                        <a href="@Url.Action("Deshabilitar", "Cita")" class="btn btn-danger">Deshabilitar</a>
+                        <a href="@Url.Action("Editar", "Cita")" class="btn btn-warning">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

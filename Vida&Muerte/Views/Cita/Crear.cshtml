@@ -3,37 +3,72 @@
 <div class="container">
     <h1 id="txtTitulo">Registrar nueva cita</h1>
     <div class="rounded border p-2 w-50">
-        <form method="post">
-            <div class="form-group mt-3 w-75">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@modelError.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+        <form asp-action="Crear" asp-controller="Cita" method="post">
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" asp-for="Nombre" required
+                       pattern=".*\S+.*" title="Este campo no puede contener solo espacios">
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
-            <div class="form-group mt-3 w-75">
-                <label asp-for="Apellidos" class="control-label"></label>
-                <input asp-for="Apellidos" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="Apellidos" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" asp-for="Apellidos" required
+                       pattern=".*\S+.*" title="Este campo no puede contener solo espacios">
                 <span asp-validation-for="Apellidos" class="text-danger"></span>
             </div>
-            <div class="form-group mt-3 w-75">
-                <label asp-for="Cedula" class="control-label"></label>
-                <input asp-for="Cedula" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="Cedula" class="form-label">Cédula</label>
+                <input type="text" class="form-control" asp-for="Cedula" required
+                       pattern="[0-9]{3}-[0-9]{7}-[0-9]{1}"
+                       title="Formato requerido: 000-0000000-0"
+                       placeholder="000-0000000-0"
+                       oninput="this.value = this.value.replace(/[^0-9-]/g, '').substring(0,11).replace(/([\d]{3})([\d]{7})([\d]{1})/,'$1-$2-$3')">
                 <span asp-validation-for="Cedula" class="text-danger"></span>
             </div>
-            <div class="form-group mt-3 w-75">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="Telefono" class="form-label">Teléfono</label>
+                <input type="text" class="form-control" asp-for="Telefono" required
+                       pattern="\([0-9]{3}\) [0-9]{3}-[0-9]{4}"
+                       title="Formato requerido: (809) 000-0000"
+                       placeholder="(809) 000-0000"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '').substring(0,10).replace(/([\d]{3})([\d]{3})([\d]{4})/,'($1) $2-$3')">
                 <span asp-validation-for="Telefono" class="text-danger"></span>
             </div>
-            <div class="form-group mt-3 w-75">
-                <label asp-for="FechaCita" class="control-label">Fecha</label>
-                <input asp-for="FechaCita" class="form-control" />
+
+            <div class="mb-3">
+                <label asp-for="FechaCita" class="form-label">Fecha y hora de la cita</label>
+                <div class="alert alert-info mb-2">
+                    <small>
+                        <i class="fas fa-info-circle"></i>
+                        Horario de atención: 8:00 AM a 5:00 PM, de lunes a viernes
+                    </small>
+                </div>
+                <input type="datetime-local"
+                       class="form-control"
+                       asp-for="FechaCita"
+                       required
+                       min="@DateTime.Now.ToString("yyyy-MM-ddT08:00")"
+                       max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-ddT17:00")"
+                       step="1800">
                 <span asp-validation-for="FechaCita" class="text-danger"></span>
             </div>
 
-            <div class="form-group mt-3" id="divBoton">
-                <button type="submit" class="btn btn-success">Guardar</button>
-                <a href="@Url.Action("Index", "Cita")" class="btn btn-dark">Cancelar</a>
-            </div>
+            <button type="submit" class="btn btn-primary">Guardar Cita</button>
+            <a href="@Url.Action("Index", "Cita")" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 </div>

@@ -27,12 +27,27 @@ namespace Vida_Muerte.Controllers
         [HttpPost]
         public async Task<IActionResult> Crear(Cita cita)
         {
+
+            if (cita.FechaCita.Hour < 8 || cita.FechaCita.Hour >= 18)
+            {
+                ModelState.AddModelError("FechaCita", "Las citas solo pueden agendarse entre las 8:00 AM y las 5:00 PM.");
+            }
+
+            // Obtener la cantidad de citas en la misma fecha
+            int citasEnElDia = (await _citaService.ObtenerCitasPorFechaAsync(cita.FechaCita.Date)).Count();
+
+            if (citasEnElDia >= 8)
+            {
+                ModelState.AddModelError("FechaCita", "No se pueden agendar más de 8 citas en un mismo día.");
+            }
+
             if (ModelState.IsValid)
             {
+                cita.IdEstado = 1;
                 await _citaService.CrearCitaAsync(cita);
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(cita);
         }
 
         [HttpGet]

@@ -11,6 +11,7 @@ namespace BusinessLogicLayer.Interfaces
     {
         Task<IEnumerable<Cita>> ObtenerCitasAsync();
         Task<Cita> ObtenerCitasPorIdAsync(int Id);
+        Task<IEnumerable<Cita>> ObtenerCitasPorFechaAsync(DateTime fecha);
         Task CrearCitaAsync(Cita cita);
         Task ActualizarCitaAsync(Cita cita);
         Task DeshabilitarCitaAsync(int Id);

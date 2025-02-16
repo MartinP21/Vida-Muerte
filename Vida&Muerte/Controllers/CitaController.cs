@@ -27,6 +27,15 @@ namespace Vida_Muerte.Controllers
         [HttpPost]
         public async Task<IActionResult> Crear(Cita cita)
         {
+            if (String.IsNullOrWhiteSpace(cita.Nombre) || cita.Nombre.Length > 50)
+            {
+                return BadRequest("El campo 'Nombre' es inválido.");
+            }
+
+            if (String.IsNullOrWhiteSpace(cita.Apellidos) || cita.Apellidos.Length > 50)
+            {
+                return BadRequest("El campo 'Apellidos' es inválido.");
+            }
 
             if (cita.FechaCita.Hour < 8 || cita.FechaCita.Hour >= 18)
             {

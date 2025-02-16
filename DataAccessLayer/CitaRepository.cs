@@ -7,32 +7,38 @@ namespace DataAccessLayer
     public class CitaRepository : ICitaRepository
     {
         private readonly AppDbContext _context;
+        // Constructor que inyecta el contexto de la base de datos
         public CitaRepository(AppDbContext context)
         {
             _context = context;
         }
+        // Método asincrono para obtener todas las citas con su estado asociado
         public async Task<IEnumerable<Cita>> ObtenerCitasAsync()
         {
             return await _context.Citas.Include(c => c.IdEstadoNavigation).ToListAsync();
         }
 
+        // Método asincrono para obtener una cita por su ID
         public async Task<Cita> ObtenerCitasPorIdAsync(int Id)
         {
-            var cita = await _context.Citas.FindAsync();
+            var cita = await _context.Citas.FindAsync(Id);
             if (cita == null)
             {
                 throw new KeyNotFoundException($"ERROR: No se encontro la cita con ID: {Id}");
             }
             return cita;
         }
+        // Método asincrono para verificar si una cédula ya existe en la base de datos
         public async Task<bool> ExisteCedulaAsync(string cedula)
         {
             return await _context.Citas.AnyAsync(c => c.Cedula == cedula);
         }
+        // Método síncrono para obtener todas las citas
         public IEnumerable<Cita> ObtenerCitas()
         {
-            return _context.Citas.ToList();
+            return _context.Citas.ToList(); // Retorna todas las citas en la base de datos
         }
+        // Método asincrono para crear una nueva cita
         public async Task CrearCitaAsync(Cita cita)
         {
             // Limpiar espacios en blanco
@@ -47,7 +53,7 @@ namespace DataAccessLayer
             _context.Citas.Add(cita);
             await _context.SaveChangesAsync();
         }
-
+        // Método asincrono para actualizar una cita existente
         public async Task ActualizarCitaAsync(Cita cita)
         {
             // Limpiar espacios en blanco
@@ -56,16 +62,18 @@ namespace DataAccessLayer
             cita.Cedula = cita.Cedula.Trim();
             cita.Telefono = cita.Telefono.Trim();
 
+            // Actualizar la cita y guardar cambios
             _context.Citas.Update(cita);
             await _context.SaveChangesAsync();
         }
-
+        // Método asincrono para deshabilitar una cita cambiando su estado a 'Deshabilitado'
         public async Task DeshabilitarCitaAsync(int Id)
         {
-            var cita = await _context.Citas.FindAsync();
+            var cita = await _context.Citas.FindAsync(Id);
+            //Si la cita existe entonces cambia el estado a 'Deshabilitado'
             if (cita != null)
             {
-                cita.IdEstado = 3;
+                cita.IdEstado = 3; // Deshabilitado
                 _context.Citas.Update(cita);
                 await _context.SaveChangesAsync();
             }

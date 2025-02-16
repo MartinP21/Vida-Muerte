@@ -31,5 +31,10 @@ namespace DataAccessLayer.Models
 
         [NotMapped]
         public string NombreEstado => IdEstadoNavigation?.NombreEstado ?? "Desconocido";
+        public void LimpiarCampos()
+        {
+            Nombre = string.IsNullOrWhiteSpace(Nombre) ? null : Nombre.Trim();
+            Apellidos = string.IsNullOrWhiteSpace(Apellidos) ? null : Apellidos.Trim();
+        }
     }
 }

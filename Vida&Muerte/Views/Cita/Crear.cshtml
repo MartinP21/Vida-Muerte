@@ -3,10 +3,12 @@
 <div class="container">
     <h1 id="txtTitulo">Registrar nueva cita</h1>
     <div class="rounded border p-2 w-50">
+        @*Comprueba si hay errores de validación en el modelo*@
         @if (!ViewData.ModelState.IsValid)
         {
             <div class="alert alert-danger">
                 <ul>
+                    @*Obtiene todos los errores del modelo y los recorre para mostrarlos*@
                     @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
                     {
                         <li>@modelError.ErrorMessage</li>
@@ -18,14 +20,14 @@
             <div class="mb-3">
                 <label asp-for="Nombre" class="form-label">Nombre</label>
                 <input type="text" class="form-control" asp-for="Nombre" required
-                       pattern=".*\S+.*" title="Este campo no puede contener solo espacios">
+                       pattern="^\S+(?: \S+)*$" title="Este campo no puede contener solo espacios">
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
                 <label asp-for="Apellidos" class="form-label">Apellidos</label>
                 <input type="text" class="form-control" asp-for="Apellidos" required
-                       pattern=".*\S+.*" title="Este campo no puede contener solo espacios">
+                       pattern="^\S+(?: \S+)*$" title="Este campo no puede contener solo espacios">
                 <span asp-validation-for="Apellidos" class="text-danger"></span>
             </div>
 
@@ -35,7 +37,7 @@
                        pattern="[0-9]{3}-[0-9]{7}-[0-9]{1}"
                        title="Formato requerido: 000-0000000-0"
                        placeholder="000-0000000-0"
-                       oninput="this.value = this.value.replace(/[^0-9-]/g, '').substring(0,11).replace(/([\d]{3})([\d]{7})([\d]{1})/,'$1-$2-$3')">
+                       oninput="this.value = this.value.replace(/[^0-9-]/g, '').substring(0,13).replace(/([\d]{3})([\d]{7})([\d]{1})/,'$1-$2-$3')">
                 <span asp-validation-for="Cedula" class="text-danger"></span>
             </div>
 
@@ -61,7 +63,7 @@
                        class="form-control"
                        asp-for="FechaCita"
                        required
-                       min="@DateTime.Now.ToString("yyyy-MM-ddT08:00")"
+                       min="@DateTime.Now.ToString("yyyy-MM-ddT08:00")" 
                        max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-ddT17:00")"
                        step="1800">
                 <span asp-validation-for="FechaCita" class="text-danger"></span>

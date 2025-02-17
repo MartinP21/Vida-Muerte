@@ -38,8 +38,8 @@
                     <td>@cita.FechaCita.ToString("dd/MM/yyyy")</td>
                     <td>@cita.NombreEstado</td>
                     <td>
-                        <a href="@Url.Action("Deshabilitar", "Cita")" class="btn btn-danger">Deshabilitar</a>
-                        <a href="@Url.Action("Editar", "Cita")" class="btn btn-warning">Editar</a>
+                         @Html.ActionLink("Deshabilitar", "Deshabilitar", new { id = cita.Id }, new { @class = "btn btn-danger" })
+                         @Html.ActionLink("Editar", "Editar", new { id = cita.Id }, new { @class = "btn btn-warning" })
                     </td>
                 </tr>
             }

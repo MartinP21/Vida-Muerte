@@ -39,6 +39,7 @@ namespace BusinessLogicLayer
         {
             return !await _citaRepository.ExisteCedulaAsync(cedula); // Retorna true si la cédula NO existe
         }
+
         // Metodo asincrono para crear una nueva cita con validaciones
         public async Task CrearCitaAsync(Cita cita)
         {
@@ -67,6 +68,27 @@ namespace BusinessLogicLayer
         // Metodo asincrono para actualizar una cita
         public async Task ActualizarCitaAsync(Cita cita)
         {
+            
+            // Validar formato de cédula
+            if (!ValidarFormatoCedula(cita.Cedula))
+            {
+                throw new ValidationException("La cédula debe contener exactamente 11 números.");
+            }
+
+            // Validar formato de teléfono
+            if (!ValidarFormatoTelefono(cita.Telefono))
+            {
+                throw new ValidationException("El teléfono debe tener un formato válido de República Dominicana.");
+            }
+
+            // Verificar cédula unica
+            if (!await ValidarCedulaUnicaAsync(cita.Cedula))
+            {
+                throw new ValidationException("Ya existe una cita registrada con esta cédula.");
+            }
+
+            // Llama al metodo limpiarCampos que eliminar los espacios en bancos de Nombre y Apellidos
+            cita.LimpiarCampos();
             await _citaRepository.ActualizarCitaAsync(cita);
         }
         // Metodo asincrono para deshabilitar una cita por su ID

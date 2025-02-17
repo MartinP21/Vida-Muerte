@@ -1,4 +1,6 @@
-﻿// Validación adicional del lado del cliente
+﻿
+
+// Validación para registro
 document.querySelector('form').addEventListener('submit', function (e) {
     const cedula = document.querySelector('[name="Cedula"]').value.replace(/[^0-9]/g, '');
     const telefono = document.querySelector('[name="Telefono"]').value.replace(/[^0-9]/g, '');
@@ -15,8 +17,8 @@ document.querySelector('form').addEventListener('submit', function (e) {
         return;
     }
 
-    const areaCode = telefono.substring(0, 3);
-    if (!['809', '829', '849'].includes(areaCode)) {
+    const areaCodigo = telefono.substring(0, 3);
+    if (!['809', '829', '849'].includes(areaCodigo)) {
         e.preventDefault();
         alert('El teléfono debe comenzar con 809, 829 o 849.');
         return;

@@ -21,7 +21,9 @@ namespace DataAccessLayer
         // Método asincrono para obtener una cita por su ID
         public async Task<Cita> ObtenerCitasPorIdAsync(int Id)
         {
-            var cita = await _context.Citas.FindAsync(Id);
+            var cita = await _context.Citas
+                             .Include(c => c.IdEstadoNavigation) // Incluye la relación con Estado
+                             .FirstOrDefaultAsync(c => c.Id == Id);
             if (cita == null)
             {
                 throw new KeyNotFoundException($"ERROR: No se encontro la cita con ID: {Id}");
@@ -29,10 +31,12 @@ namespace DataAccessLayer
             return cita;
         }
         // Método asincrono para verificar si una cédula ya existe en la base de datos
-        public async Task<bool> ExisteCedulaAsync(string cedula)
+        public async Task<bool> ExisteCedulaAsync(string cedula, int? idCita = null)
         {
-            return await _context.Citas.AnyAsync(c => c.Cedula == cedula);
+            return await _context.Citas.AnyAsync(c =>
+                c.Cedula == cedula && (!idCita.HasValue || c.Id != idCita.Value));
         }
+
         // Método síncrono para obtener todas las citas
         public IEnumerable<Cita> ObtenerCitas()
         {
@@ -62,8 +66,16 @@ namespace DataAccessLayer
             cita.Cedula = cita.Cedula.Trim();
             cita.Telefono = cita.Telefono.Trim();
 
-            // Actualizar la cita y guardar cambios
-            _context.Citas.Update(cita);
+            // Desconectar cualquier entidad existente con el mismo ID
+            var citaExistente = await _context.Citas.FindAsync(cita.Id);
+            if (citaExistente == null)
+            {
+                throw new Exception($"No se encontró la cita con ID {cita.Id}");
+            }
+
+            _context.Entry(citaExistente).State = EntityState.Detached; // Desconecta 'citaExistente' del seguimiento para evitar conflictos.
+            _context.Entry(cita).State = EntityState.Modified; // Marca la entidad 'cita' como modificada para que EF actualice sus cambios.
+
             await _context.SaveChangesAsync();
         }
         // Método asincrono para deshabilitar una cita cambiando su estado a 'Deshabilitado'

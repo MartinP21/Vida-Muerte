@@ -17,6 +17,8 @@
             </div>
         }
         <form asp-action="Editar" asp-controller="Cita" method="post">
+            <input type="hidden" asp-for="Id" />
+
             <div class="mb-3">
                 <label asp-for="Nombre" class="form-label">Nombre</label>
                 <input type="text" class="form-control" asp-for="Nombre" required
@@ -67,6 +69,14 @@
                        max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-ddT17:00")"
                        step="1800">
                 <span asp-validation-for="FechaCita" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="IdEstado" class="form-label">Estado</label>
+                <select asp-for="IdEstado" class="form-select">
+                    <option value="1">Pendiente</option>
+                    <option value="2">Completada</option>
+                    <option value="3">Deshabilitada</option>
+                </select>
             </div>
 
             <button type="submit" class="btn btn-primary">Guardar</button>

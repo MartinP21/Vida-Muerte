@@ -24,23 +24,18 @@
                 <th>Teléfono</th>
                 <th>Fecha</th>
                 <th>Estado</th>
-                <th>Acción</th>
             </tr>
         </thead>
         <tbody>
             @foreach(var cita in Model)
             {
-                <tr>
+                <tr class="click-filas" data-href="@Url.Action("Detalles", "Cita", new { id = cita.Id })">
                     <td>@cita.Nombre</td>
                     <td>@cita.Apellidos</td>
                     <td>@cita.Cedula</td>
                     <td>@cita.Telefono</td>
                     <td>@cita.FechaCita.ToString("dd/MM/yyyy")</td>
-                    <td>@cita.NombreEstado</td>
-                    <td>
-                         @Html.ActionLink("Deshabilitar", "Deshabilitar", new { id = cita.Id }, new { @class = "btn btn-danger" })
-                         @Html.ActionLink("Editar", "Editar", new { id = cita.Id }, new { @class = "btn btn-warning" })
-                    </td>
+                    <td>@cita.NombreEstado</td>                   
                 </tr>
             }
         </tbody>

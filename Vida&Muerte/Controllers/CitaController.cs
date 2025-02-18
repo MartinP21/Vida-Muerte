@@ -164,6 +164,11 @@ namespace Vida_Muerte.Controllers
                 {
                     return NotFound();
                 }
+                if (ModelState.IsValid)
+                {
+                    await _citaService.DeshabilitarCitaAsync(id);
+                    return RedirectToAction("Index");
+                }
                 return View(cita);
             }
             catch (Exception ex)

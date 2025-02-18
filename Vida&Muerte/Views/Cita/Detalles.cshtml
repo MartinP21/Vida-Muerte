@@ -26,8 +26,34 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Deshabilitar", "Deshabilitar", new { id = Model.Id }, new { @class = "btn btn-danger" })
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Deshabilitar</button>
     @Html.ActionLink("Editar", "Editar", new { id = Model.Id }, new { @class = "btn btn-warning" })
     <a href="@Url.Action("Index", "Cita")" class="btn btn-secondary">Volver</a>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Escriba el motivo por el cual desea deshabilitar esta cita</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <input type="text" class="form-control" required>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                @Html.ActionLink("Deshabilitar", "Deshabilitar", new { id = Model.Id }, new { @class = "btn btn-danger" })
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
 </div>
 

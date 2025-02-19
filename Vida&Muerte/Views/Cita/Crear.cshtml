@@ -64,8 +64,7 @@
                        asp-for="FechaCita"
                        required
                        min="@DateTime.Now.ToString("yyyy-MM-ddT08:00")" 
-                       max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-ddT17:00")"
-                       step="1800">
+                       max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-ddT17:00")">
                 <span asp-validation-for="FechaCita" class="text-danger"></span>
             </div>
 

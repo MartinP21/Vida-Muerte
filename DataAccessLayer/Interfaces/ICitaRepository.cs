@@ -9,6 +9,6 @@ namespace DataAccessLayer.Interfaces
         Task<bool> ExisteCedulaAsync(string cedula, int? idCita = null);
         Task CrearCitaAsync(Cita cita);
         Task ActualizarCitaAsync(Cita cita);
-        Task DeshabilitarCitaAsync(int Id);
+        Task DeshabilitarCitaAsync(int Id, string motivo);
     }
 }

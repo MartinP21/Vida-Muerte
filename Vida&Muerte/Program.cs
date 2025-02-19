@@ -16,7 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<ICitaRepository, CitaRepository>();
 builder.Services.AddScoped<ICitaService, CitaService>();
-
+builder.Services.AddHostedService<ActualizarEstadoCitasService>();
 
 var app = builder.Build();
 

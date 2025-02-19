@@ -79,13 +79,14 @@ namespace DataAccessLayer
             await _context.SaveChangesAsync();
         }
         // Método asincrono para deshabilitar una cita cambiando su estado a 'Deshabilitado'
-        public async Task DeshabilitarCitaAsync(int Id)
+        public async Task DeshabilitarCitaAsync(int Id, string motivo)
         {
             var cita = await _context.Citas.FindAsync(Id);
             //Si la cita existe entonces cambia el estado a 'Deshabilitado'
             if (cita != null)
             {
                 cita.IdEstado = 3; // Deshabilitado
+                cita.Motivo = motivo;
                 _context.Citas.Update(cita);
                 await _context.SaveChangesAsync();
             }

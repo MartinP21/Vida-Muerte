@@ -54,3 +54,7 @@ body {
 #divBoton {
     margin-left: 69px 
 }
+
+.click-filas {
+    cursor: pointer;
+}

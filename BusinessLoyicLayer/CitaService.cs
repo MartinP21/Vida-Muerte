@@ -92,9 +92,9 @@ namespace BusinessLogicLayer
         }
 
         // Metodo asincrono para deshabilitar una cita por su ID
-        public async Task DeshabilitarCitaAsync(int Id)
+        public async Task DeshabilitarCitaAsync(int Id, string motivo)
         {
-            await _citaRepository.DeshabilitarCitaAsync(Id);
+            await _citaRepository.DeshabilitarCitaAsync(Id, motivo);
         }
         // Metodo privado para validar el formato de la cédula (11 dígitos numéricos)
         private bool ValidarFormatoCedula(string cedula)

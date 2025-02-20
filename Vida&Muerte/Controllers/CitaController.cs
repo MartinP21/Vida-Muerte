@@ -28,39 +28,48 @@ namespace Vida_Muerte.Controllers
         [HttpPost]
         public async Task<IActionResult> Crear(Cita cita)
         {
-            // Validar que el campo Nombre no esté vacío y no supere los 50 caracteres
-            if (String.IsNullOrWhiteSpace(cita.Nombre) || cita.Nombre.Length > 50)
+            try
             {
-                return BadRequest("El campo 'Nombre' es inválido.");
+                if (String.IsNullOrWhiteSpace(cita.Nombre) || cita.Nombre.Length > 50)
+                {
+                    ModelState.AddModelError("Nombre", "El campo 'Nombre' es inválido.");
+                }
+
+                if (String.IsNullOrWhiteSpace(cita.Apellidos) || cita.Apellidos.Length > 50)
+                {
+                    ModelState.AddModelError("Apellidos", "El campo 'Apellidos' es inválido.");
+                }
+
+
+                if (cita.FechaCita.Hour < 8 || cita.FechaCita.Hour >= 18)
+                {
+                    ModelState.AddModelError("FechaCita", "Las citas solo pueden agendarse entre las 8:00 AM y las 5:00 PM.");
+                }
+
+                var citasEnElDia = (await _citaService.ObtenerCitasPorFechaAsync(cita.FechaCita.Date)).Count();
+                if (citasEnElDia >= 8)
+                {
+                    ModelState.AddModelError("FechaCita", "No se pueden agendar más de 8 citas en un mismo día.");
+                }
+
+
+                if (ModelState.IsValid)
+                {
+                    cita.IdEstado = 1;
+                    await _citaService.CrearCitaAsync(cita);
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar la cita");
+                ModelState.AddModelError("", "Ha ocurrido un error al procesar su solicitud.");
             }
 
-            // Validar que el campo Apellidos no esté vacío y no supere los 50 caracteres
-            if (String.IsNullOrWhiteSpace(cita.Apellidos) || cita.Apellidos.Length > 50)
-            {
-                return BadRequest("El campo 'Apellidos' es inválido.");
-            }
-
-            // Validar que la cita esté dentro del horario permitido (8:00 AM - 5:00 PM)
-            if (cita.FechaCita.Hour < 8 || cita.FechaCita.Hour >= 18)
-            {
-                ModelState.AddModelError("FechaCita", "Las citas solo pueden agendarse entre las 8:00 AM y las 5:00 PM.");
-            }
-
-            // Obtener la cantidad de citas que ya existen en la misma fecha
-            int citasEnElDia = (await _citaService.ObtenerCitasPorFechaAsync(cita.FechaCita.Date)).Count();
-
-            // Validar que no haya más de 8 citas en un mismo día
-            if (citasEnElDia >= 8)
-            {
-                ModelState.AddModelError("FechaCita", "No se pueden agendar más de 8 citas en un mismo día.");
-            }
-            // Si no hay errores en ModelState, proceder con la creación de la cita
-            if (ModelState.IsValid)
-            {
-                cita.IdEstado = 1;
-                await _citaService.CrearCitaAsync(cita);
-                return RedirectToAction("Index");
-            }
             return View(cita);
         }
 
@@ -122,29 +131,18 @@ namespace Vida_Muerte.Controllers
                     ModelState.AddModelError("Apellidos", "El campo 'Apellidos' es inválido.");
                 }
 
-                // Si el estado es Completada (IdEstado == 2), se omite la validación de FechaCita
-                if (cita.IdEstado != 2)
-                {
-                    if (cita.FechaCita.Hour < 8 || cita.FechaCita.Hour >= 18)
-                    {
-                        ModelState.AddModelError("FechaCita", "Las citas solo pueden agendarse entre las 8:00 AM y las 5:00 PM.");
-                    }
 
-                    var citasEnElDia = (await _citaService.ObtenerCitasPorFechaAsync(cita.FechaCita.Date)).Count();
-                    if (citasEnElDia >= 8)
-                    {
-                        ModelState.AddModelError("FechaCita", "No se pueden agendar más de 8 citas en un mismo día.");
-                    }
-                }
-                else
+                if (cita.FechaCita.Hour < 8 || cita.FechaCita.Hour >= 18)
                 {
-                    // Remueve cualquier error existente en FechaCita para permitir citas completadas,
-                    // aunque la fecha haya pasado o esté fuera del horario permitido.
-                    if (ModelState.ContainsKey("FechaCita"))
-                    {
-                        ModelState["FechaCita"].Errors.Clear();
-                    }
+                    ModelState.AddModelError("FechaCita", "Las citas solo pueden agendarse entre las 8:00 AM y las 5:00 PM.");
                 }
+
+                var citasEnElDia = (await _citaService.ObtenerCitasPorFechaAsync(cita.FechaCita.Date)).Count();
+                if (citasEnElDia >= 8)
+                {
+                    ModelState.AddModelError("FechaCita", "No se pueden agendar más de 8 citas en un mismo día.");
+                }
+                
 
                 if (ModelState.IsValid)
                 {
@@ -188,6 +186,11 @@ namespace Vida_Muerte.Controllers
                     // Regresa a la vista de detalles
                     var cita = await _citaService.ObtenerCitasPorIdAsync(id);
                     return View("Detalles", cita);
+                }
+
+                if (string.IsNullOrWhiteSpace(motivo) || motivo.Length > 150)
+                {
+                    ModelState.AddModelError("Motivo", "El motivo es demasiado largo. !No puede tener mas de 150 caracteres.");
                 }
 
                 await _citaService.DeshabilitarCitaAsync(id, motivo);

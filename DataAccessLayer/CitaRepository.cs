@@ -15,7 +15,10 @@ namespace DataAccessLayer
         // Método asincrono para obtener todas las citas con su estado asociado
         public async Task<IEnumerable<Cita>> ObtenerCitasAsync()
         {
-            return await _context.Citas.Include(c => c.IdEstadoNavigation).ToListAsync();
+            return await _context.Citas
+                .Include(c => c.IdEstadoNavigation)
+                .OrderByDescending(c => c.Id)
+                .ToListAsync();
         }
 
         // Método asincrono para obtener una cita por su ID

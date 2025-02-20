@@ -3,15 +3,14 @@
 <div class="container">
     <div id="cabecero">
         <input type="text" name="filtro" id="filtroCita" class="form-control w-50" placeholder="Escribir cita a buscar..."/>
-        
-        <form action="/action_page.php" id="cboCita">
+        <div id="cboCita">
             <label for="citas">Mostrar Citas</label>
             <select name="citas" id="citas">
                 <option value="1">Pendientes</option>
                 <option value="2">Completadas</option>
                 <option value="3">Deshabilitadas</option>
             </select>
-        </form>
+        </div>
     </div>
 
     <a href="@Url.Action("Crear", "Cita")" class="btn btn-primary" id="btnCNuevo">Crear Nuevo</a>

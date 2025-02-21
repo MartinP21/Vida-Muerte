@@ -18,6 +18,15 @@ namespace BusinessLogicLayer
         {
             _citaRepository = citaRepository;
         }
+
+        // Método asincrono para obtener citas paginadas según el estado
+        public async Task<(IEnumerable<Cita> citas, int totalRegistros)> ObtenerCitasPorEstadoPaginadasAsync(int pagina, int registrosPorPagina, int? idEstado)
+        {
+            var citas = await _citaRepository.ObtenerCitasPorEstadoPaginadasAsync(pagina, registrosPorPagina, idEstado);
+            var totalRegistros = await _citaRepository.ObtenerTotalCitasPorEstadoAsync(idEstado);
+            return (citas, totalRegistros);
+        }
+
         // Metodo asincrono para obtener todas las citas
         public Task<IEnumerable<Cita>> ObtenerCitasAsync()
         {

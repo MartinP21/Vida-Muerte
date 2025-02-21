@@ -31,9 +31,11 @@
     </dl>
 </div>
 <div>
-    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Deshabilitar</button>
+    @if (Model.IdEstado != 3){
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Deshabilitar</button>
+    }
     @Html.ActionLink("Editar", "Editar", new { id = Model.Id }, new { @class = "btn btn-warning" })
-    <a href="@Url.Action("Index", "Cita")" class="btn btn-secondary">Volver</a>
+    <a href="@ViewBag.ReturnUrl" class="btn btn-secondary">Volver</a>
 </div>
 
 <!-- The Modal -->

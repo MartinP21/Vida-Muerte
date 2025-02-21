@@ -14,11 +14,22 @@ namespace Vida_Muerte.Controllers
             _logger = logger;
             _citaService = citaService;
         }
-        public async Task<IActionResult> Index()
+
+        // Método de accion para mostrar una tabla con todas las citas, inicialmente se muestran las citas pendientes y paginadas
+        public async Task<IActionResult> Index(int pagina = 1, int registrosPorPagina = 10, int? idEstado = 1)
         {
-            var cita = await _citaService.ObtenerCitasAsync();
-            return View(cita);
+            // Se invoca al servicio para obtener las citas filtradas y paginadas con el total de registros
+            var (citas, totalRegistros) = await _citaService.ObtenerCitasPorEstadoPaginadasAsync(pagina, registrosPorPagina, idEstado);
+
+            // Se calculan y asignan en ViewBag los valores necesarios para la paginacion: La pagina actual, el total de paginas y el filtro aplicado
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+            ViewBag.RegistrosPorPagina = registrosPorPagina;
+            ViewBag.IdEstado = idEstado; // Guardamos el filtro actual
+
+            return View(citas);
         }
+
 
         [HttpGet]
         public IActionResult Crear()
@@ -74,7 +85,7 @@ namespace Vida_Muerte.Controllers
         }
 
         // Método de acción para mostrar los detalles de una cita
-        public async Task<IActionResult> Detalles(int id)
+        public async Task<IActionResult> Detalles(int id, string returnUrl)
         {
             try
             {
@@ -83,6 +94,7 @@ namespace Vida_Muerte.Controllers
                 {
                     return NotFound();
                 }
+                ViewBag.ReturnUrl = returnUrl ?? Url.Action("Index");
                 return View(cita);
             }
             catch (Exception ex)

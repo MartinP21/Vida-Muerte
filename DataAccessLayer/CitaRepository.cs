@@ -12,6 +12,44 @@ namespace DataAccessLayer
         {
             _context = context;
         }
+
+        // Método para obtener las citas filtradas y paginadas
+        public async Task<IEnumerable<Cita>> ObtenerCitasPorEstadoPaginadasAsync(int pagina, int registrosPorPagina, int? idEstado)
+        {
+            // Convierte la colección en una consulta para modificarla dinámicamente
+            var query = _context.Citas
+                                .Include(c => c.IdEstadoNavigation)
+                                .AsQueryable();
+
+            // Filtra las citas por el id del estado
+            if (idEstado.HasValue)
+            {
+                query = query.Where(c => c.IdEstado == idEstado.Value);
+            }
+
+            // Ordena las citas por fecha de manera descendiente
+            query = query.OrderByDescending(c => c.FechaCita)
+                         .Skip((pagina - 1) * registrosPorPagina)
+                         .Take(registrosPorPagina);
+
+            return await query.ToListAsync();
+        }
+
+        // Método para obtener el total de registro filtrado
+        public async Task<int> ObtenerTotalCitasPorEstadoAsync(int? idEstado)
+        {
+            // Convierte la colección en una consulta para modificarla dinámicamente
+            var query = _context.Citas.AsQueryable();
+
+            // Filtra las citas por el id del estado
+            if (idEstado.HasValue)
+            {
+                query = query.Where(c => c.IdEstado == idEstado.Value);
+            }
+
+            return await query.CountAsync();
+        }
+
         // Método asincrono para obtener todas las citas con su estado asociado
         public async Task<IEnumerable<Cita>> ObtenerCitasAsync()
         {

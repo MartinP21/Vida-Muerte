@@ -4,6 +4,8 @@ namespace DataAccessLayer.Interfaces
 {
     public interface ICitaRepository
     {
+        Task<IEnumerable<Cita>> ObtenerCitasPorEstadoPaginadasAsync(int pagina, int registrosPorPagina, int? idEstado);
+        Task<int> ObtenerTotalCitasPorEstadoAsync(int? idEstado);
         Task<IEnumerable<Cita>> ObtenerCitasAsync();
         Task<Cita> ObtenerCitasPorIdAsync(int Id);
         Task<bool> ExisteCedulaAsync(string cedula, int? idCita = null);

@@ -6,7 +6,7 @@
 
         <div id="cboCita">
             <label for="citas">Mostrar Citas</label>
-            <select id="citas" name="idEstado" onchange="window.location.href='@Url.Action("Index", "Cita")?pagina=1&registrosPorPagina=@ViewBag.RegistrosPorPagina&idEstado=' + this.value;">
+            <select class="form-select-sm" id="citas" name="idEstado" onchange="window.location.href='@Url.Action("Index", "Cita")?pagina=1&registrosPorPagina=@ViewBag.RegistrosPorPagina&idEstado=' + this.value;">
                 <!-- Renderizamos las opciones sin insertar lógica en los atributos -->
                 @if (ViewBag.IdEstado == 1)
                 {

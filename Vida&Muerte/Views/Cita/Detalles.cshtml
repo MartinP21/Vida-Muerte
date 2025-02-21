@@ -31,7 +31,7 @@
     </dl>
 </div>
 <div>
-    @if (Model.IdEstado != 3){
+    @if (Model.IdEstado == 1){
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Deshabilitar</button>
     }
     @Html.ActionLink("Editar", "Editar", new { id = Model.Id }, new { @class = "btn btn-warning" })

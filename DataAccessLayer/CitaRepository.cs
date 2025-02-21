@@ -28,7 +28,7 @@ namespace DataAccessLayer
             }
 
             // Ordena las citas por fecha de manera descendiente
-            query = query.OrderByDescending(c => c.FechaCita)
+            query = query.OrderByDescending(c => c.Id)
                          .Skip((pagina - 1) * registrosPorPagina)
                          .Take(registrosPorPagina);
 

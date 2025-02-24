@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace DataAccessLayer
+namespace DataAccessLayer.Models
 {
     public partial class AppDbContext : DbContext
     {
@@ -32,9 +31,6 @@ namespace DataAccessLayer
         {
             modelBuilder.Entity<Cita>(entity =>
             {
-                entity.HasIndex(e => e.Cedula, "UQ__Citas__B4ADFE38FCBED69B")
-                    .IsUnique();
-
                 entity.Property(e => e.Apellidos).HasMaxLength(100);
 
                 entity.Property(e => e.Cedula)

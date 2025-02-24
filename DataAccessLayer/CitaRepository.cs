@@ -71,12 +71,6 @@ namespace DataAccessLayer
             }
             return cita;
         }
-        // Método asincrono para verificar si una cédula ya existe en la base de datos
-        public async Task<bool> ExisteCedulaAsync(string cedula, int? idCita = null)
-        {
-            return await _context.Citas.AnyAsync(c =>
-                c.Cedula == cedula && (!idCita.HasValue || c.Id != idCita.Value));
-        }
 
         // Método síncrono para obtener todas las citas
         public IEnumerable<Cita> ObtenerCitas()

@@ -43,11 +43,6 @@ namespace BusinessLogicLayer
             var citas = await _citaRepository.ObtenerCitasAsync(); // Obtiene todas las citas
             return citas.Where(c => c.FechaCita.Date == fecha.Date); // Filtra las citas con la fecha dada
         }
-        // Metodo asincrono para validar si una cédula es unica en la base de datos excluyendo la cita actual en caso de editar
-        public async Task<bool> ValidarCedulaUnicaAsync(string cedula, int? idCita = null)
-        {
-            return !await _citaRepository.ExisteCedulaAsync(cedula, idCita);
-        }
 
         // Metodo asincrono para crear una nueva cita con validaciones
         public async Task CrearCitaAsync(Cita cita)
@@ -62,12 +57,6 @@ namespace BusinessLogicLayer
             if (!ValidarFormatoTelefono(cita.Telefono))
             {
                 throw new ValidationException("El teléfono debe tener un formato válido de República Dominicana.");
-            }
-
-            // Verificar cédula unica
-            if (!await ValidarCedulaUnicaAsync(cita.Cedula))
-            {
-                throw new ValidationException("Ya existe una cita registrada con esta cédula.");
             }
 
             // Llama al metodo limpiarCampos que eliminar los espacios en bancos de Nombre y Apellidos
@@ -88,13 +77,6 @@ namespace BusinessLogicLayer
             if (!ValidarFormatoTelefono(cita.Telefono))
             {
                 throw new ValidationException("El teléfono debe tener un formato válido de República Dominicana.");
-            }
-
-            // Verificar que la cédula sea unica excluyendo la cita actual
-            // Si se edita y la cedula no cambia, no mostraria que la cedula esta duplicada.
-            if (!await ValidarCedulaUnicaAsync(cita.Cedula, cita.Id))
-            {
-                throw new ValidationException("Ya existe otra cita registrada con esta cédula.");
             }
 
             await _citaRepository.ActualizarCitaAsync(cita);

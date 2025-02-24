@@ -8,13 +8,23 @@ namespace DataAccessLayer.Models
 {
     public partial class Cita
     {
+        [Key]
         public int Id { get; set; }
+        [StringLength(100)]
         public string Nombre { get; set; } = null!;
+        [StringLength(100)]
         public string Apellidos { get; set; } = null!;
+        [StringLength(15)]
+        [Unicode(false)]
         public string Cedula { get; set; } = null!;
+        [StringLength(15)]
+        [Unicode(false)]
         public string Telefono { get; set; } = null!;
+        [Column(TypeName = "datetime")]
         public DateTime FechaCita { get; set; }
         public int IdEstado { get; set; }
+        [StringLength(150)]
+        [Unicode(false)]
         public string? Motivo { get; set; }
 
         [ForeignKey("IdEstado")]
@@ -28,5 +38,6 @@ namespace DataAccessLayer.Models
             Nombre = string.IsNullOrWhiteSpace(Nombre) ? null : Nombre.Trim();
             Apellidos = string.IsNullOrWhiteSpace(Apellidos) ? null : Apellidos.Trim();
         }
+
     }
 }

@@ -32,49 +32,49 @@
 </div>
 <div>
     @if (Model.IdEstado == 1){
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Deshabilitar</button>
+        <button class="btn btn-danger btnDeshabilitar">Deshabilitar</button>
     }
     @Html.ActionLink("Editar", "Editar", new { id = Model.Id }, new { @class = "btn btn-warning" })
     <a href="@ViewBag.ReturnUrl" class="btn btn-secondary">Volver</a>
 </div>
 
-<!-- The Modal -->
-<div class="modal fade" id="myModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Formulario que hará el POST a Deshabilitar -->
-            <form asp-action="Deshabilitar" method="post" id="formDeshabilitar">
-                <!-- Enviamos el Id oculto -->
-                <input type="hidden" name="id" value="@Model.Id" />
+@* <!-- The Modal --> *@
+@* <div class="modal fade" id="myModal" tabindex="-1"> *@
+@*     <div class="modal-dialog"> *@
+@*         <div class="modal-content"> *@
+@*             <!-- Formulario que hará el POST a Deshabilitar --> *@
+@*             <form asp-action="Deshabilitar" method="post" id="formDeshabilitar"> *@
+@*                 <!-- Enviamos el Id oculto --> *@
+@*                 <input type="hidden" name="id" value="@Model.Id" /> *@
 
-                <div class="modal-header">
-                    <h4 class="modal-title">Escriba el motivo para deshabilitar esta cita</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+@*                 <div class="modal-header"> *@
+@*                     <h4 class="modal-title">Escriba el motivo para deshabilitar esta cita</h4> *@
+@*                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button> *@
+@*                 </div> *@
 
-                <div class="modal-body">
-                    <input type="text"
-                           id="motivoInput"
-                           class="form-control"
-                           name="motivo"
-                           required
-                           minlength="20"
-                           maxlength="150"
-                           placeholder="Escriba aquí su motivo..." />
-                    <span asp-validation-for="Motivo" class="text-danger"></span>
-                    <div class="invalid-tooltip">
-                        El motivo debe tener entre 20 y 150 caracteres.
-                    </div>
-                </div>
+@*                 <div class="modal-body"> *@
+@*                     <input type="text" *@
+@*                            id="motivoInput" *@
+@*                            class="form-control" *@
+@*                            name="motivo" *@
+@*                            required *@
+@*                            minlength="20" *@
+@*                            maxlength="150" *@
+@*                            placeholder="Escriba aquí su motivo..." /> *@
+@*                     <span asp-validation-for="Motivo" class="text-danger"></span> *@
+@*                     <div class="invalid-tooltip"> *@
+@*                         El motivo debe tener entre 20 y 150 caracteres. *@
+@*                     </div> *@
+@*                 </div> *@
 
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Deshabilitar</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Cerrar
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+@*                 <div class="modal-footer"> *@
+@*                     <button type="submit" class="btn btn-danger btnDeshabilitar">Deshabilitar</button> *@
+@*                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> *@
+@*                         Cerrar *@
+@*                     </button> *@
+@*                 </div> *@
+@*             </form> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
 

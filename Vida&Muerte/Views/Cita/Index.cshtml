@@ -51,12 +51,16 @@
         <tbody>
             @foreach (var cita in Model)
             {
-                <tr class="click-filas" data-href="@Url.Action("Detalles", "Cita", new { id = cita.Id,
-                            returnUrl = Url.Action("Index", new {
+                <tr class="click-filas" data-href="@Url.Action("Detalles", "Cita", new
+                    {
+                        id = cita.Id,
+                        returnUrl = Url.Action("Index", new
+                        {
                             pagina = ViewBag.PaginaActual,
                             registroPorPagina = ViewBag.RegistroPorPagina,
-                            idEstado = ViewBag.IdEstado}) 
-                            })">
+                            idEstado = ViewBag.IdEstado
+                        })
+                    })">
                     <td>@cita.Nombre</td>
                     <td>@cita.Apellidos</td>
                     <td>@cita.Cedula</td>
@@ -94,4 +98,21 @@
             </li>
         </ul>
     </nav>
+    @* <button class="btn btn-success btnAlerta">Alerta</button> *@
+
+    @* <script type="text/javascript"> *@
+
+    @*     let btn = document.querySelector('.btnAlerta'); *@
+
+    @*     if(btn){ *@
+    @*         btn.addEventListener('click', () => { *@
+    @*             Swal.fire({ *@
+    @*               title: "fsgdfgfg!", *@
+    @*               icon: "success", *@
+    @*               draggable: true *@
+    @*             }); *@
+    @*         }); *@
+    @*     } *@
+
+    @* </script> *@
 </div>

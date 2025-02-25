@@ -19,4 +19,8 @@
     <ProjectReference Include="..\BusinessLoyicLayer\BusinessLogicLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\sweetalert\" />
+  </ItemGroup>
+
 </Project>

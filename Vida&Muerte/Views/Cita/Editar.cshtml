@@ -16,7 +16,7 @@
                 </ul>
             </div>
         }
-        <form asp-action="Editar" asp-controller="Cita" method="post">
+        <form asp-action="Editar" asp-controller="Cita" method="post" class="formEdit">
             <input type="hidden" asp-for="Id" />
 
             <div class="mb-3">
@@ -83,7 +83,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button class="btn btn-primary btnGuardarEdit">Guardar</button>
             <a href="@Url.Action("Index", "Cita")" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>

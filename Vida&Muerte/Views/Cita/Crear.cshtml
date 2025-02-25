@@ -16,7 +16,7 @@
                 </ul>
             </div>
         }
-        <form asp-action="Crear" asp-controller="Cita" method="post">
+        <form asp-action="Crear" asp-controller="Cita" method="post" class="formCreate">
             <div class="mb-3">
                 <label asp-for="Nombre" class="form-label">Nombre</label>
                 <input type="text" class="form-control" asp-for="Nombre" required
@@ -68,7 +68,7 @@
                 <span asp-validation-for="FechaCita" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="btn btn-primary">Guardar Cita</button>
+            <button type="submit" class="btn btn-primary btnCrear">Guardar Cita</button>
             <a href="@Url.Action("Index", "Cita")" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>

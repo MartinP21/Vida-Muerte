@@ -32,7 +32,7 @@
 </div>
 <div>
     @if (Model.IdEstado == 1){
-        <button class="btn btn-danger btnDeshabilitar">Deshabilitar</button>
+        <button class="btn btn-danger btnDeshabilitar" data-id="@Model.Id">Deshabilitar</button>
     }
     @Html.ActionLink("Editar", "Editar", new { id = Model.Id }, new { @class = "btn btn-warning" })
     <a href="@ViewBag.ReturnUrl" class="btn btn-secondary">Volver</a>

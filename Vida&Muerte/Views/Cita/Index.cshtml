@@ -34,10 +34,12 @@
                 }
             </select>
         </div>
+        <div cboCantidadCita>
+        </div>
     </div>
 
     <a href="@Url.Action("Crear", "Cita")" class="btn btn-primary" id="btnCNuevo">Crear Nuevo</a>
-    <table class="table table-hover rounded border p-2">
+    <table id="tablaCitas" class="table table-hover rounded border p-2">
         <thead class="table-dark">
             <tr>
                 <th>Nombre</th>
@@ -71,48 +73,4 @@
             }
         </tbody>
     </table>
-
-    <!-- Paginación -->
-    <nav aria-label="Paginación">
-        <ul class="pagination justify-content-center">
-            <li class="page-item @(ViewBag.PaginaActual == 1 ? "disabled" : "")">
-                <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual - 1, registrosPorPagina = ViewBag.RegistrosPorPagina, idEstado = ViewBag.IdEstado })" tabindex="-1">Anterior</a>
-            </li>
-
-            @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
-            {
-                if (i == ViewBag.PaginaActual)
-                {
-                    <li class="page-item active"><span class="page-link">@i</span></li>
-                }
-                else
-                {
-                    <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Index", new { pagina = i, registrosPorPagina = ViewBag.RegistrosPorPagina, idEstado = ViewBag.IdEstado })">@i</a>
-                    </li>
-                }
-            }
-
-            <li class="page-item @(ViewBag.PaginaActual == ViewBag.TotalPaginas ? "disabled" : "")">
-                <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual + 1, registrosPorPagina = ViewBag.RegistrosPorPagina, idEstado = ViewBag.IdEstado })">Siguiente</a>
-            </li>
-        </ul>
-    </nav>
-    @* <button class="btn btn-success btnAlerta">Alerta</button> *@
-
-    @* <script type="text/javascript"> *@
-
-    @*     let btn = document.querySelector('.btnAlerta'); *@
-
-    @*     if(btn){ *@
-    @*         btn.addEventListener('click', () => { *@
-    @*             Swal.fire({ *@
-    @*               title: "fsgdfgfg!", *@
-    @*               icon: "success", *@
-    @*               draggable: true *@
-    @*             }); *@
-    @*         }); *@
-    @*     } *@
-
-    @* </script> *@
 </div>

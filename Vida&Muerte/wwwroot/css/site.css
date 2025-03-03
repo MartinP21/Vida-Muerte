@@ -59,3 +59,27 @@ body {
 .click-filas {
     cursor: pointer;
 }
+
+.container {
+    margin-top: 20px;
+}
+
+.card-header {
+    background-color: #2663a8;
+    color: #ffffff; 
+}
+
+.table thead th {
+    background-color: #2663a8; 
+    color: #ffffff; 
+}
+
+.table thead th {
+    border-color: #0056b3; 
+}
+
+.swal2-input-label {
+    font-size: 24px !important; 
+    font-weight: bold !important;
+    color: #000 !important;
+}

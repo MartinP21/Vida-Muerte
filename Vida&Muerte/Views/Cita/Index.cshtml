@@ -1,118 +1,79 @@
-﻿@model IEnumerable<DataAccessLayer.Models.Cita>
+﻿<div class="container">
+    <!-- Tarjeta para encapsular el contenido -->
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <!-- Selector de estado -->
+            <div id="cboCita">
+                <label for="citas">Mostrar Citas</label>
+                <select class="form-select-sm" id="citas" name="idEstado" onchange="window.location.href='@Url.Action("Index", "Cita")?pagina=1&registrosPorPagina=@ViewBag.RegistrosPorPagina&idEstado=' + this.value;">
+                    <!-- Renderizamos las opciones sin insertar lógica en los atributos -->
+                    @if (ViewBag.IdEstado == 1)
+                    {
+                        <option value="1" selected>Pendientes</option>
+                    }
+                    else
+                    {
+                        <option value="1">Pendientes</option>
+                    }
+                    @if (ViewBag.IdEstado == 2)
+                    {
+                        <option value="2" selected>Completadas</option>
+                    }
+                    else
+                    {
+                        <option value="2">Completadas</option>
+                    }
+                    @if (ViewBag.IdEstado == 3)
+                    {
+                        <option value="3" selected>Deshabilitadas</option>
+                    }
+                    else
+                    {
+                        <option value="3">Deshabilitadas</option>
+                    }
+                </select>
+            </div>
+            <!-- Botón "Crear Nuevo" -->
+            <a href="@Url.Action("Crear", "Cita")" class="btn btn-primary" id="btnCNuevo">Crear Nuevo</a>
+        </div>
 
-<div class="container">
-    <div id="cabecero">
-        <input type="text" name="filtro" id="filtroCita" class="form-control w-50" placeholder="Escribir cita a buscar..." />
-
-        <div id="cboCita">
-            <label for="citas">Mostrar Citas</label>
-            <select class="form-select-sm" id="citas" name="idEstado" onchange="window.location.href='@Url.Action("Index", "Cita")?pagina=1&registrosPorPagina=@ViewBag.RegistrosPorPagina&idEstado=' + this.value;">
-                <!-- Renderizamos las opciones sin insertar lógica en los atributos -->
-                @if (ViewBag.IdEstado == 1)
-                {
-                    <option value="1" selected>Pendientes</option>
-                }
-                else
-                {
-                    <option value="1">Pendientes</option>
-                }
-                @if (ViewBag.IdEstado == 2)
-                {
-                    <option value="2" selected>Completadas</option>
-                }
-                else
-                {
-                    <option value="2">Completadas</option>
-                }
-                @if (ViewBag.IdEstado == 3)
-                {
-                    <option value="3" selected>Deshabilitadas</option>
-                }
-                else
-                {
-                    <option value="3">Deshabilitadas</option>
-                }
-            </select>
+        <div class="card-body">
+            <!-- Tabla en modo responsive -->
+            <div class="table-responsive">
+                <table id="tablaCitas" class="table table-hover table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Cédula</th>
+                            <th>Teléfono</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cita in Model)
+                        {
+                            <tr class="click-filas" 
+                                data-href="@Url.Action("Detalles", "Cita", new {
+                                    id = cita.Id,
+                                    returnUrl = Url.Action("Index", new {
+                                        pagina = ViewBag.PaginaActual,
+                                        registroPorPagina = ViewBag.RegistroPorPagina,
+                                        idEstado = ViewBag.IdEstado
+                                    })
+                                })">
+                                <td>@cita.Nombre</td>
+                                <td>@cita.Apellidos</td>
+                                <td>@cita.Cedula</td>
+                                <td>@cita.Telefono</td>
+                                <td>@cita.FechaCita.ToString("dd/MM/yyyy")</td>
+                                <td>@cita.NombreEstado</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <a href="@Url.Action("Crear", "Cita")" class="btn btn-primary" id="btnCNuevo">Crear Nuevo</a>
-    <table class="table table-hover rounded border p-2">
-        <thead class="table-dark">
-            <tr>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Cédula</th>
-                <th>Teléfono</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var cita in Model)
-            {
-                <tr class="click-filas" data-href="@Url.Action("Detalles", "Cita", new
-                    {
-                        id = cita.Id,
-                        returnUrl = Url.Action("Index", new
-                        {
-                            pagina = ViewBag.PaginaActual,
-                            registroPorPagina = ViewBag.RegistroPorPagina,
-                            idEstado = ViewBag.IdEstado
-                        })
-                    })">
-                    <td>@cita.Nombre</td>
-                    <td>@cita.Apellidos</td>
-                    <td>@cita.Cedula</td>
-                    <td>@cita.Telefono</td>
-                    <td>@cita.FechaCita.ToString("dd/MM/yyyy")</td>
-                    <td>@cita.NombreEstado</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <!-- Paginación -->
-    <nav aria-label="Paginación">
-        <ul class="pagination justify-content-center">
-            <li class="page-item @(ViewBag.PaginaActual == 1 ? "disabled" : "")">
-                <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual - 1, registrosPorPagina = ViewBag.RegistrosPorPagina, idEstado = ViewBag.IdEstado })" tabindex="-1">Anterior</a>
-            </li>
-
-            @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
-            {
-                if (i == ViewBag.PaginaActual)
-                {
-                    <li class="page-item active"><span class="page-link">@i</span></li>
-                }
-                else
-                {
-                    <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Index", new { pagina = i, registrosPorPagina = ViewBag.RegistrosPorPagina, idEstado = ViewBag.IdEstado })">@i</a>
-                    </li>
-                }
-            }
-
-            <li class="page-item @(ViewBag.PaginaActual == ViewBag.TotalPaginas ? "disabled" : "")">
-                <a class="page-link" href="@Url.Action("Index", new { pagina = ViewBag.PaginaActual + 1, registrosPorPagina = ViewBag.RegistrosPorPagina, idEstado = ViewBag.IdEstado })">Siguiente</a>
-            </li>
-        </ul>
-    </nav>
-    @* <button class="btn btn-success btnAlerta">Alerta</button> *@
-
-    @* <script type="text/javascript"> *@
-
-    @*     let btn = document.querySelector('.btnAlerta'); *@
-
-    @*     if(btn){ *@
-    @*         btn.addEventListener('click', () => { *@
-    @*             Swal.fire({ *@
-    @*               title: "fsgdfgfg!", *@
-    @*               icon: "success", *@
-    @*               draggable: true *@
-    @*             }); *@
-    @*         }); *@
-    @*     } *@
-
-    @* </script> *@
 </div>

@@ -16,23 +16,25 @@ namespace DataAccessLayer
         // Método para obtener las citas filtradas y paginadas
         public async Task<IEnumerable<Cita>> ObtenerCitasPorEstadoPaginadasAsync(int pagina, int registrosPorPagina, int? idEstado)
         {
-            // Convierte la colección en una consulta para modificarla dinámicamente
-            var query = _context.Citas
-                                .Include(c => c.IdEstadoNavigation)
-                                .AsQueryable();
+            // Calcula el número de registros a saltar
+            int offset = (pagina - 1) * registrosPorPagina;
 
-            // Filtra las citas por el id del estado
-            if (idEstado.HasValue)
+            // Crea una consulta sobre la tabla 'Citas'
+            IQueryable<Cita> query = _context.Citas
+                // Si 'idEstado' tiene un valor filtra por ese estado si es 'NULL' entonces las trae todas
+                .Where(c => !idEstado.HasValue || c.IdEstado == idEstado.Value)
+                .OrderBy(c => c.Id) // Ordena las citas por el 'ID'
+                .Skip(offset) // Salta los primeros registros 
+                .Take(registrosPorPagina); // Toma la cantidad de registros especificadas por 'registroPorPagina'
+
+            var citas = await query.ToListAsync(); 
+
+            foreach (var cita in citas)
             {
-                query = query.Where(c => c.IdEstado == idEstado.Value);
+                await _context.Entry(cita).Reference(c => c.IdEstadoNavigation).LoadAsync();
             }
 
-            // Ordena las citas por fecha de manera descendiente
-            query = query.OrderByDescending(c => c.Id)
-                         .Skip((pagina - 1) * registrosPorPagina)
-                         .Take(registrosPorPagina);
-
-            return await query.ToListAsync();
+            return citas;
         }
 
         // Método para obtener el total de registro filtrado

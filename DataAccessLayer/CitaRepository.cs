@@ -16,23 +16,26 @@ namespace DataAccessLayer
         // Método para obtener las citas filtradas y paginadas
         public async Task<IEnumerable<Cita>> ObtenerCitasPorEstadoPaginadasAsync(int pagina, int registrosPorPagina, int? idEstado)
         {
-            // Convierte la colección en una consulta para modificarla dinámicamente
-            var query = _context.Citas
-                                .Include(c => c.IdEstadoNavigation)
-                                .AsQueryable();
+            // Calcula el número de registros a saltar
+            int offset = (pagina - 1) * registrosPorPagina;
 
-            // Filtra las citas por el id del estado
-            if (idEstado.HasValue)
+            // Crea una sonsulta sobre la tabla Citas
+            IQueryable<Cita> query = _context.Citas
+                // Si 'idEstado' tiene un valor, filtra por ese estado. Si es 'NULL', trae todas las citas
+                .Where(c => !idEstado.HasValue || c.IdEstado == idEstado.Value) // Filtrar antes de paginar
+                .OrderByDescending(c => c.Id) // Ordena por el 'ID' de la cita de manera descendente
+                .Skip(offset) // Salta los primeros registros para ir a la página deseada
+                .Take(registrosPorPagina); // Toma la cantidad de registros especificados por 'registrosPorPagina'
+
+            // Pasa la consulta y la convierte en una lista y la asigna a la variable 'citas'
+            var citas = await query.ToListAsync();
+
+            foreach (var cita in citas)
             {
-                query = query.Where(c => c.IdEstado == idEstado.Value);
+                await _context.Entry(cita).Reference(c => c.IdEstadoNavigation).LoadAsync();
             }
 
-            // Ordena las citas por fecha de manera descendiente
-            query = query.OrderByDescending(c => c.Id)
-                         .Skip((pagina - 1) * registrosPorPagina)
-                         .Take(registrosPorPagina);
-
-            return await query.ToListAsync();
+            return citas;
         }
 
         // Método para obtener el total de registro filtrado
@@ -50,15 +53,6 @@ namespace DataAccessLayer
             return await query.CountAsync();
         }
 
-        // Método asincrono para obtener todas las citas con su estado asociado
-        public async Task<IEnumerable<Cita>> ObtenerCitasAsync()
-        {
-            return await _context.Citas
-                .Include(c => c.IdEstadoNavigation)
-                .OrderByDescending(c => c.Id)
-                .ToListAsync();
-        }
-
         // Método asincrono para obtener una cita por su ID
         public async Task<Cita> ObtenerCitasPorIdAsync(int Id)
         {
@@ -72,11 +66,6 @@ namespace DataAccessLayer
             return cita;
         }
 
-        // Método síncrono para obtener todas las citas
-        public IEnumerable<Cita> ObtenerCitas()
-        {
-            return _context.Citas.ToList(); // Retorna todas las citas en la base de datos
-        }
         // Método asincrono para crear una nueva cita
         public async Task CrearCitaAsync(Cita cita)
         {

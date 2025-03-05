@@ -43,6 +43,7 @@
                 <table id="tablaCitas" class="table table-hover table-sm align-middle">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Nombre</th>
                             <th>Apellidos</th>
                             <th>Cédula</th>
@@ -63,6 +64,7 @@
                                         idEstado = ViewBag.IdEstado
                                     })
                                 })">
+                                <td>@cita.Id</td>
                                 <td>@cita.Nombre</td>
                                 <td>@cita.Apellidos</td>
                                 <td>@cita.Cedula</td>

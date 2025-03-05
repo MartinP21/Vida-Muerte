@@ -16,7 +16,7 @@ namespace Vida_Muerte.Controllers
         }
 
         // Método de accion para mostrar una tabla con todas las citas, inicialmente se muestran las citas pendientes y paginadas
-        public async Task<IActionResult> Index(int pagina = 1, int registrosPorPagina = 100, int? idEstado = 1)
+        public async Task<IActionResult> Index(int pagina = 1, int registrosPorPagina = 10, int? idEstado = 1)
         {
             // Se invoca al servicio para obtener las citas filtradas y paginadas con el total de registros
             var (citas, totalRegistros) = await _citaService.ObtenerCitasPorEstadoPaginadasAsync(pagina, registrosPorPagina, idEstado);
@@ -61,7 +61,9 @@ namespace Vida_Muerte.Controllers
                     ModelState.AddModelError("FechaCita", "Las citas solo pueden agendarse entre las 8:00 AM y las 5:00 PM.");
                 }
 
+
                 // Si todas las condiciónes se cumplen entonces se crea la cita
+
                 if (ModelState.IsValid)
                 {
                     cita.IdEstado = 1; // Le asigna el valor de '1 = Pendiente'
@@ -157,9 +159,14 @@ namespace Vida_Muerte.Controllers
                 if (cita.FechaCita.Hour < 8 || cita.FechaCita.Hour >= 18)
                 {
                     ModelState.AddModelError("FechaCita", "Las citas solo pueden agendarse entre las 8:00 AM y las 5:00 PM.");
+
+                }              
+
+
                 }
 
                 // Si todas las condiciónes se cumplen entonces se edita la cita
+
                 if (ModelState.IsValid)
                 {
                     await _citaService.ActualizarCitaAsync(cita); // Actualiza la cita

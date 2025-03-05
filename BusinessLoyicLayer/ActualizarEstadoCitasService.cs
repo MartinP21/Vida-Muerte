@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using DataAccessLayer.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using DataAccessLayer.Models;
 
 namespace BusinessLogicLayer
 {
@@ -40,32 +41,42 @@ namespace BusinessLogicLayer
                 // Obtiene una instancia del repositorio de citas
                 var citaRepository = scope.ServiceProvider.GetRequiredService<ICitaRepository>();
 
-                // Llama al metodo ObtenerCitasAsync
-                var citas = await citaRepository.ObtenerCitasAsync();
+                // Variables para la paginación
+                int pagina = 1;
+                int registrosPorPagina = 100;
+                List<Cita> citas = new List<Cita>();
+
+                // Cargamos citas paginadas (estado = 1, es decir, pendientes)
+                while (true)
+                {
+                    var citasPagina = await citaRepository.ObtenerCitasPorEstadoPaginadasAsync(pagina, registrosPorPagina, 1);
+                    if (!citasPagina.Any()) break;
+                    citas.AddRange(citasPagina);
+                    pagina++;
+                }
 
                 // Verifica si la lista de citas es nula o está vacía
-                if (citas == null || !citas.Any())
+                if (!citas.Any())
                 {
                     return; // Si no hay citas, termina la ejecución del método
                 }
 
-                // Itera sobre cada cita obtenida
+                // Itera sobre cada cita obtenida y actualiza el estado si corresponde
                 foreach (var cita in citas)
                 {
-                    // Comprueba si la fecha de la cita es anterior a la fecha actual y si el estado es Pendiente
-                    if (cita.FechaCita < DateTime.Now && cita.IdEstado == 1) // 1 = Pendiente
+                    // Comprueba si la fecha de la cita es anterior a la fecha actual y si el estado es Pendiente (1)
+                    if (cita.FechaCita < DateTime.Now && cita.IdEstado == 1)
                     {
-                        // Cambia el estado de la cita
-                        cita.IdEstado = 2; // 2 = Completada
-
-                        //Actualiza la cita en la base de datos
+                        // Cambia el estado de la cita a Completada (2)
+                        cita.IdEstado = 2;
+                        // Actualiza la cita en la base de datos
                         await citaRepository.ActualizarCitaAsync(cita);
                     }
                 }
             }
         }
 
-        // Metodo que se ejecuta al detener el servicio
+        // Método que se ejecuta al detener el servicio
         public Task StopAsync(CancellationToken cancellationToken)
         {
             // Detiene el temporizador para que no se sigan ejecutando llamadas al método de actualización
@@ -73,7 +84,7 @@ namespace BusinessLogicLayer
             return Task.CompletedTask;
         }
 
-        // Metodo para liberar recursos.
+        // Método para liberar recursos.
         public void Dispose()
         {
             _timer?.Dispose();  // Libera el recurso del temporizador

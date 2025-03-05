@@ -27,21 +27,10 @@ namespace BusinessLogicLayer
             return (citas, totalRegistros);
         }
 
-        // Metodo asincrono para obtener todas las citas
-        public Task<IEnumerable<Cita>> ObtenerCitasAsync()
-        {
-            return _citaRepository.ObtenerCitasAsync();
-        }
         // Metodo asincrono para obtener una cita por su ID
         public Task<Cita> ObtenerCitasPorIdAsync(int Id)
         {
             return _citaRepository.ObtenerCitasPorIdAsync(Id);
-        }
-        // Metodo asincrono para obtener citas por una fecha específica
-        public async Task<IEnumerable<Cita>> ObtenerCitasPorFechaAsync(DateTime fecha)
-        {
-            var citas = await _citaRepository.ObtenerCitasAsync(); // Obtiene todas las citas
-            return citas.Where(c => c.FechaCita.Date == fecha.Date); // Filtra las citas con la fecha dada
         }
 
         // Metodo asincrono para crear una nueva cita con validaciones

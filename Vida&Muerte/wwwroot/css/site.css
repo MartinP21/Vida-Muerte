@@ -25,50 +25,46 @@ body {
     color: white;
 }
 
-#filtroCita {
-    display: inline;
-}
 /*==================== Dropdown ====================*/
 #cboCita {
     display: inline;
     float: right;
 }
 
+/*==================== Boton para crear ===================*/
 #btnCNuevo {
     float: right;
     margin-bottom: 5px;
     margin-top: 10px;
 }
 
+/*==================== Titulo para el formulario de crear y editar ===================*/
 #txtTitulo {
     text-align: center;
 }
 
+/*================== Clase que contiene los errores del formulario ===================*/
 .rounded {
     margin: auto;
 }
 
-.form-group {
-    margin: auto;
-}
-
-#divBoton {
-    margin-left: 69px 
-}
-
+/*================== Pointer para que el usuario identifique la acción click en cada una de las citas para ver los detalles ==============*/
 .click-filas {
     cursor: pointer;
 }
 
+/*================== Contenedor para las vistas 'Index, Crear y Editar' ====================*/
 .container {
     margin-top: 20px;
 }
 
+/*================= Contiene el 'Combobox' y el boton 'Crear Nuevo' de la vista 'Index' ==================*/
 .card-header {
     background-color: #2663a8;
     color: #ffffff; 
 }
 
+/*================ Contiene el 'thead' de la tala que se encuentra en la vista 'Index' =================*/
 .table thead th {
     background-color: #2663a8; 
     color: #ffffff; 
@@ -78,6 +74,7 @@ body {
     border-color: #0056b3; 
 }
 
+/*=============== Contiene el 'Titulo' que esta en el input para escribir el motivo para deshabilitar una cita ===============*/
 .swal2-input-label {
     font-size: 24px !important; 
     font-weight: bold !important;

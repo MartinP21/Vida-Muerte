@@ -110,8 +110,8 @@ if (btnDeshabilitar) {
                 if (!value) {
                     return "Necesitas escribir un motivo";
                 }
-                if (value.length < 20) {
-                    return "El motivo debe tener al menos 20 caracteres";
+                if (value.length < 5) {
+                    return "El motivo debe tener al menos 5 caracteres";
                 }
                 if (value.length > 150) {
                     return "El motivo no puede exceder 150 caracteres";

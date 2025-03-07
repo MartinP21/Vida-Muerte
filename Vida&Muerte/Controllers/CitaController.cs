@@ -190,10 +190,10 @@ namespace Vida_Muerte.Controllers
         {
             try
             {
-                // Válida que el motivo no contenga espacios inapropiados o que sea menor a 20 caracteres
-                if (string.IsNullOrWhiteSpace(motivo) || motivo.Length < 20)
+                // Válida que el motivo no contenga espacios inapropiados o que sea menor a 5 caracteres
+                if (string.IsNullOrWhiteSpace(motivo) || motivo.Length < 5)
                 {
-                    ModelState.AddModelError("Motivo", "El motivo debe tener al menos 20 caracteres.");
+                    ModelState.AddModelError("Motivo", "El motivo debe tener al menos 5 caracteres.");
 
                     // Regresa a la vista de detalles
                     var cita = await _citaService.ObtenerCitasPorIdAsync(id);

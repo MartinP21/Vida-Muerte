@@ -57,6 +57,12 @@
                 <span asp-validation-for="Telefono" class="text-danger"></span>
             </div>
 
+            @{
+                var minDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+                var maxDate = DateTime.Now.AddDays(365).ToString("yyyy-MM-ddTHH:mm");
+            }
+
+
             <div class="mb-3">
                 <label asp-for="FechaCita" class="form-label">Fecha y hora de la cita</label>
                 <div class="alert alert-info mb-2">
@@ -68,12 +74,11 @@
                 <input type="datetime-local"
                        class="form-control"
                        asp-for="FechaCita"
-                       pattern="^((0?[8-9]|1[0-6]):[0-5]\d|(17:00))$"
                        required
                        oninvalid="this.setCustomValidity('Ingrese una fecha válida');"
                        onchange="try{setCustomValidity('')}catch(e){};" x-moz-errormessage="Ingrese una fecha válida"
-                       min="@DateTime.Now.ToString("yyyy-MM-ddT08:00")" 
-                       max="@DateTime.Now.AddDays(365).ToString("yyyy-MM-ddT17:00")">
+                       min="@minDate"
+                       max="@maxDate">
                 <span asp-validation-for="FechaCita" class="text-danger"></span>
             </div>
 

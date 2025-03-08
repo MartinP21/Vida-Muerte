@@ -27,6 +27,12 @@ namespace BusinessLogicLayer
             return (citas, totalRegistros);
         }
 
+        // Método que obtiene el total de las citas
+        public async Task<int> ObtenerTotalCitasAsync()
+        {
+            return await _citaRepository.ObtenerTotalCitasAsync();
+        }
+
         // Metodo asincrono para obtener una cita por su ID
         public Task<Cita> ObtenerCitasPorIdAsync(int Id)
         {

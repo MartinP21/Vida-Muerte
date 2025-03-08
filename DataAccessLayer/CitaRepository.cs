@@ -38,6 +38,12 @@ namespace DataAccessLayer
             return citas;
         }
 
+        // Método para contar todas las citas
+        public async Task<int> ObtenerTotalCitasAsync()
+        {
+            return await _context.Citas.CountAsync();
+        }
+
         // Método para obtener el total de registro filtrado
         public async Task<int> ObtenerTotalCitasPorEstadoAsync(int? idEstado)
         {

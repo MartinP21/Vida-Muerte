@@ -10,6 +10,7 @@ namespace BusinessLogicLayer.Interfaces
     public interface ICitaService
     {
         Task<(IEnumerable<Cita> citas, int totalRegistros)> ObtenerCitasPorEstadoPaginadasAsync(int pagina, int registrosPorPagina, int? idEstado);
+        Task<int> ObtenerTotalCitasAsync();
         Task<Cita> ObtenerCitasPorIdAsync(int Id);
         Task CrearCitaAsync(Cita cita);
         Task ActualizarCitaAsync(Cita cita);

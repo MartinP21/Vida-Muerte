@@ -16,19 +16,23 @@ namespace Vida_Muerte.Controllers
         }
 
         // Método de accion para mostrar una tabla con todas las citas, inicialmente se muestran las citas pendientes y paginadas
-        public async Task<IActionResult> Index(int pagina = 1, int registrosPorPagina = 100, int? idEstado = 1)
+        public async Task<IActionResult> Index(int pagina = 1, int? idEstado = 1)
         {
-            // Se invoca al servicio para obtener las citas filtradas y paginadas con el total de registros
-            var (citas, totalRegistros) = await _citaService.ObtenerCitasPorEstadoPaginadasAsync(pagina, registrosPorPagina, idEstado);
+            // Obtener el total de registros en la base de datos
+            int totalRegistros = await _citaService.ObtenerTotalCitasAsync();
 
-            // Se calculan y asignan en ViewBag los valores necesarios para la paginacion: La pagina actual, el total de paginas y el filtro aplicado
+            // Se invoca al servicio para obtener las citas filtradas y paginadas
+            var (citas, totalRegistrosFiltrados) = await _citaService.ObtenerCitasPorEstadoPaginadasAsync(pagina, totalRegistros, idEstado);
+
+            // Se calculan y asignan en ViewBag los valores necesarios para la paginación
             ViewBag.PaginaActual = pagina;
-            ViewBag.TotalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
-            ViewBag.RegistrosPorPagina = registrosPorPagina;
-            ViewBag.IdEstado = idEstado; // Guardamos el filtro actual
+            ViewBag.TotalPaginas = (int)Math.Ceiling((double)totalRegistrosFiltrados / totalRegistros);
+            ViewBag.RegistrosPorPagina = totalRegistros;
+            ViewBag.IdEstado = idEstado;
 
             return View(citas);
         }
+
 
         // Método para llamar a la vista que contiene el formulario 'Crear'
         [HttpGet]
